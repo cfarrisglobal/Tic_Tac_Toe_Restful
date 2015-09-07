@@ -6,13 +6,9 @@
 
 package com.game.resources;
 
-
-import com.google.common.base.Optional;
-import com.codahale.metrics.annotation.Timed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.validation.Valid;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.List;
 
 import com.game.core.Game;
@@ -47,9 +43,15 @@ public class GameResource {
     
     @POST
     public Game add(@Valid Game game) {
-        int newID = gameDAO.insert(game);
-        
-        return game.setId(newID);
+    	/*
+    	 * Check if game object posted has an ID. If no ID is found then assign one by 
+    	 * adding 1 to the highest id found in the games table in database
+    	 */
+        if(game.getId() == null || game.getId() == 0) {
+        	game.setId(gameDAO.gameIndex() + 1);
+        }
+    	gameDAO.insert(game);
+        return game;
     }
     
     @PUT

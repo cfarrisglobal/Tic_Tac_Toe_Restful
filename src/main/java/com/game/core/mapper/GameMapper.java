@@ -21,6 +21,9 @@ public class GameMapper implements ResultSetMapper<Game> {
     public Game map(int index, ResultSet resultSet, StatementContext statementContext) throws SQLException {
         return new Game()
             .setId(resultSet.getInt("gameID"))
-            .setNextMove(resultSet.getInt("nextMove"));
+            .setNextMove(resultSet.getInt("nextMove"))
+        	.setPlayerOne(resultSet.getInt("playerOne"))
+        	.setPlayerTwo(resultSet.getInt("playerTwo"))
+        	.setWinner(resultSet.getInt("winner"));
     }
 }

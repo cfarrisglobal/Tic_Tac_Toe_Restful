@@ -29,9 +29,14 @@ public interface GameDAO {
     @SqlUpdate("delete from games where gameID = :id")
     int deleteById(@Bind("id") int id);
 
-    @SqlUpdate("update into games set nextMove = :nextMove where gameID = :id")
+    @SqlUpdate("update into games set nextMove = :nextMove, playerOne = :playerOne, "
+    		+ "playerTwo = :playerTwo, winner = :winner where gameID = :id")
     int update(@BindBean Game game);
 
-    @SqlUpdate("insert into games (gameID, nextMove) values (:id, :nextMove)")
+    @SqlUpdate("insert into games (gameID, nextMove, playerOne, playerTwo, "
+    		+ "winner) values (:id, :nextMove, :playerOne, :playerTwo, :winner)")
     int insert(@BindBean Game game);
+    
+    @SqlQuery("select max(gameID) from games")
+    int gameIndex();
 }

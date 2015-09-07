@@ -8,7 +8,7 @@ CREATE TABLE games(
 	gameID INT NOT NULL,
     playerOne INT NOT NULL,
     playerTwo INT NOT NULL,
-    nextMove INT,
+    nextMove INT NOT NULL,
     winner INT,
     PRIMARY KEY (gameID),
     FOREIGN KEY (playerOne) REFERENCES players(playerID),

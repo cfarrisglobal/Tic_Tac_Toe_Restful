@@ -4,5 +4,11 @@ CREATE TABLE games(
     PRIMARY KEY (gameID)
 );
 
-INSERT INTO games (gameID, nextMove)
-VALUES (1, 1);
+INSERT INTO players (playerID)
+VALUES (1);
+
+INSERT INTO players (playerID)
+VALUES (2);
+
+INSERT INTO games (gameID, nextMove, playerOne, playerTwo)
+VALUES (1, 1, 1, 2);

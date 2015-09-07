@@ -22,6 +22,17 @@ public class Game {
     @NotNull
     @JsonProperty
     private int nextMove;
+    
+    @NotNull
+    @JsonProperty
+    private int playerOne;
+    
+    @NotNull
+    @JsonProperty
+    private int playerTwo;
+    
+    @JsonProperty
+    private int winner;
 
     public Integer getId() {
         return id;
@@ -41,6 +52,33 @@ public class Game {
         return this;
     }
     
+    public Integer getPlayerOne() {
+        return playerOne;
+    }
+    
+    public Game setPlayerOne(Integer playerOne) {
+        this.playerOne = playerOne;
+        return this;
+    }
+    
+    public Integer getPlayerTwo() {
+        return playerTwo;
+    }
+    
+    public Game setPlayerTwo(Integer playerTwo) {
+        this.playerTwo = playerTwo;
+        return this;
+    }
+    
+    public Integer getWinner() {
+        return winner;
+    }
+    
+    public Game setWinner(Integer winner) {
+        this.winner = winner;
+        return this;
+    }
+    
     /*
     * Check to see if two game objects equal each other
     */
@@ -53,6 +91,9 @@ public class Game {
 
         if (!getId().equals(that.getId())) return false;
         if (!getNextMove().equals(that.getNextMove())) return false;
+        if (!getPlayerOne().equals(that.getPlayerOne())) return false;
+        if (!getPlayerTwo().equals(that.getPlayerTwo())) return false;
+        if (!getWinner().equals(that.getWinner())) return false;
 
         return true;
     }
