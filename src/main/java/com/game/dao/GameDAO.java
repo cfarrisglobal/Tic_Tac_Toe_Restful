@@ -1,7 +1,7 @@
 /*
 * Created by Cody Farris
 * cfarrisutd@gmail.com
-* Last Updated 9/4/15
+* Last Updated 9/8/15
 */
 
 package com.game.dao;
@@ -29,7 +29,7 @@ public interface GameDAO {
     @SqlUpdate("delete from games where gameID = :id")
     int deleteById(@Bind("id") int id);
 
-    @SqlUpdate("update into games set nextMove = :nextMove, playerOne = :playerOne, "
+    @SqlUpdate("update games set nextMove = :nextMove, playerOne = :playerOne, "
     		+ "playerTwo = :playerTwo, winner = :winner where gameID = :id")
     int update(@BindBean Game game);
 
@@ -37,6 +37,6 @@ public interface GameDAO {
     		+ "winner) values (:id, :nextMove, :playerOne, :playerTwo, :winner)")
     int insert(@BindBean Game game);
     
-    @SqlQuery("select max(gameID) from games")
+    @SqlQuery("select ifnull(max(gameID), 0) from games")
     int gameIndex();
 }

@@ -6,11 +6,16 @@
 
 package com.game.core;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.validation.constraints.NotNull;
 
 /*
-* Game class creates and holds the game data once the webservice has queried the database
+* Game class creates Game objects that are constructed on either data
+* entered by the client or fetched from the database.
 */
 
 public class Game {
@@ -33,8 +38,26 @@ public class Game {
     
     @JsonProperty
     private int winner;
+    
+    @JsonProperty
+    private List<Link> links = new ArrayList<>();
 
-    public Integer getId() {
+    public List<Link> getLinks() {
+		return links;
+	}
+
+	public void setLinks(List<Link> links) {
+		this.links = links;
+	}
+	
+	public void addLink(String url, String rel) {
+		Link link = new Link();
+		link.setLink(url);
+		link.setRel(rel);
+		links.add(link);
+	}
+
+	public Integer getId() {
         return id;
     }
     

@@ -1,14 +1,20 @@
 /*
 * Created by Cody Farris
 * cfarrisutd@gmail.com
-* Last Updated 9/7/15
+* Last Updated 9/8/15
 */
 
 package com.game.resources;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.Response.Status;
 import javax.validation.Valid;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import com.game.core.Player;
@@ -31,35 +37,69 @@ public class PlayerResource {
     }
 
     @GET
-    public List<Player> getAll() {
-        return playerDAO.getAll();
+    public List<Player> getAll(@Context UriInfo uriInfo) {
+        List<Player> toReturn = new ArrayList<>();
+    	toReturn = playerDAO.getAll();
+        
+    	for(int x = 0; x < toReturn.size(); x++) {
+        	
+    		// Build links for HATEOAS standard
+        	String uriSelf = getURIForSelf(uriInfo, toReturn.get(x));
+        	toReturn.get(x).addLink(uriSelf, "self");
+
+    	}
+    	
+    	return toReturn;
     }
     
     @GET
     @Path("/{id}")
-    public Player get(@PathParam("id") Integer id) {
-        return playerDAO.findById(id);
+    public Player get(@PathParam("id") Integer id, @Context UriInfo uriInfo) {
+        Player toReturn = playerDAO.findById(id);
+        
+        // Build links for HATEOAS standard
+        String uriSelf = getURIForSelf(uriInfo, toReturn);
+        toReturn.addLink(uriSelf, "self");
+        
+    	return toReturn;
     }
     
     @POST
-    public Player add(@Valid Player player) {
+    public Response add(@Context UriInfo uriInfo) {
     	/*
-    	 * Check if player object posted has an ID. If no ID is found then assign one by 
-    	 * adding 1 to the highest id found in the player table in database
+    	 * Set player ID as one more than the highest ID number present in the
+    	 * database's players table.
     	 */
-        if(player.getId() == null || player.getId() == 0) {
-        	player.setId(playerDAO.playerIndex() + 1);
-        }
+    	Player player = new Player();
+        player.setId(playerDAO.playerIndex() + 1);
         playerDAO.insert(player);
-        return player;
+        
+        // Build links for HATEOAS standard
+        String uriSelf = getURIForSelf(uriInfo, player);
+        player.addLink(uriSelf, "self");
+        
+        return Response.status(Status.CREATED)
+        		.entity(player)
+        		.build();
     }
     
     @PUT
     @Path("/{id}")
-    public Player update(@PathParam("id") Integer id, @Valid Player player) {
-        player = player.setId(id);
-        playerDAO.update(player);
+    public Response update(@PathParam("id") Integer id, @Valid Player player) {
+        /*
+         * After a player is created there should be no updating of any data
+         * by the client directly. Here we return the 405 Method Not Allowed.
+         */
 
-        return player;
+        return Response.status(Status.METHOD_NOT_ALLOWED).build();
     }
+    
+	private String getURIForSelf(UriInfo uriInfo, Player toReturn) {
+		String uri = uriInfo.getBaseUriBuilder()
+    	.path(GameResource.class)
+    	.path(Integer.toString(toReturn.getId()))
+    	.build()
+    	.toString();
+		return uri;
+	}
 }

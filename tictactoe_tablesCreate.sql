@@ -13,8 +13,7 @@ CREATE TABLE games(
     PRIMARY KEY (gameID),
     FOREIGN KEY (playerOne) REFERENCES players(playerID),
     FOREIGN KEY (playerTwo) REFERENCES players(playerID),
-    FOREIGN KEY (nextMove) REFERENCES players(playerID),
-    FOREIGN KEY (winner) REFERENCES players(playerID)
+    FOREIGN KEY (nextMove) REFERENCES players(playerID)
 );
 
 CREATE TABLE gameState(
