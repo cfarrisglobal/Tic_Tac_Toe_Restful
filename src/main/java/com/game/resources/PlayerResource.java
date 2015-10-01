@@ -96,7 +96,7 @@ public class PlayerResource {
     
 	private String getURIForSelf(UriInfo uriInfo, Player toReturn) {
 		String uri = uriInfo.getBaseUriBuilder()
-    	.path(GameResource.class)
+    	.path(PlayerResource.class)
     	.path(Integer.toString(toReturn.getId()))
     	.build()
     	.toString();

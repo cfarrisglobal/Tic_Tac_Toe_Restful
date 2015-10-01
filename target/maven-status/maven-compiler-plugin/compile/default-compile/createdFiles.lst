@@ -1,0 +1,6 @@
+com\game\GameApplication.class
+com\game\resources\GameResource.class
+com\game\GameConfiguration.class
+com\game\core\Game.class
+com\game\core\mapper\GameMapper.class
+com\game\dao\GameDAO.class
